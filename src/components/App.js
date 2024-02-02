@@ -1,20 +1,23 @@
-// create your App component here
-// create your App component here
-// create your App component here
 import React, { useState, useEffect } from 'react';
 
 function App() {
-  const [dog, setDog] = useState(null); // Initialize dog as null
+  const [dog, setDog] = useState(null);
 
   useEffect(() => {
-    fetch('https://dog.ceo/api/breeds/image/random')
-      .then((response) => response.json())
-      .then((data) => {
+    const fetchDogImage = async () => {
+      try {
+        const response = await fetch('https://dog.ceo/api/breeds/image/random');
+        const data = await response.json();
         setDog(data.message);
-      });
+      } catch (error) {
+        console.error('Error fetching dog image:', error);
+      }
+    };
+
+    fetchDogImage();
   }, []);
 
-  if (dog === null) return <p>Loading...</p>; // Check if dog is null and display loading message
+  if (dog === null) return <p>Loading...</p>;
 
   return (
     <img src={dog} alt="A Random Dog" />
